@@ -5,26 +5,45 @@ const User = require("../models/user");
 const Ledger = require("../models/ledger");
 
 exports.signup = (req, res, next) => {
-  const name = req.body.name;
-  const mobile = req.body.mobile;
+  const sponsor = req.body.spn;
   const mail = req.body.mail;
   const pass = req.body.pass;
+  let keyId = Math.floor(100000 + Math.random() * 900000);
+  // get sponsor team
+  const spnTeam = [];
+  const NewspnTeam = [];
+  User.findOne({ keyid: sponsor }).then((spnData) => {
+    spnTeam.push(...spnData.uplines);
+  });
+  if (spnTeam.length > 0) {
+    NewspnTeam = spnTeam.map((items) => {
+      return (items.lvl += 1);
+    });
+  }
+
   let sendData;
   bcrypt
     .hash(pass, 12)
     .then((hashPass) => {
       const user = new User({
-        name: name,
-        mobile: mobile,
+        keyid: keyId,
         mail: mail,
         password: hashPass,
+        sponsor: sponsor,
       });
       return user.save();
     })
     .then((userData) => {
       sendData = userData;
+      NewspnTeam.push({ keyid: sponsor, lvl: 1 });
+      return User.findOneAndUpdate(
+        { _id: userData._id },
+        { uplines: NewspnTeam }
+      );
+    })
+    .then((updateResult) => {
       const ledger = new Ledger({
-        user: userData._id,
+        user: sendData._id,
         folio: "Opening",
         details: "Opening",
         credit: 0,

@@ -23,7 +23,7 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  upline: {
+  uplines: {
     type: Array,
     default: [],
   },
