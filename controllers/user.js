@@ -1,10 +1,18 @@
 //const { validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const Ledger = require("../models/ledger");
 
 exports.signup = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error("Validation failed.");
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
   const sponsor = req.body.spn;
   const mail = req.body.mail;
   const pass = req.body.pass;
@@ -13,13 +21,14 @@ exports.signup = (req, res, next) => {
   let spnTeam;
   let NewspnTeam;
   User.findOne({ keyid: sponsor }).then((spnData) => {
+    console.log(spnData.uplines);
     spnTeam = [...spnData.uplines];
+    if (spnTeam.length > 0) {
+      NewspnTeam = spnTeam.map((items) => {
+        return { keyid: items.keyid, lvl: (items.lvl += 1) };
+      });
+    }
   });
-  if (spnTeam) {
-    NewspnTeam = spnTeam.map((items) => {
-      return (items.lvl += 1);
-    });
-  }
 
   let sendData;
   bcrypt
