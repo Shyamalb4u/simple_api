@@ -10,10 +10,10 @@ exports.signup = (req, res, next) => {
   const pass = req.body.pass;
   let keyId = Math.floor(100000 + Math.random() * 900000);
   // get sponsor team
-  const spnTeam = [];
-  const NewspnTeam = [];
+  let spnTeam;
+  let NewspnTeam;
   User.findOne({ keyid: sponsor }).then((spnData) => {
-    spnTeam.push(...spnData.uplines);
+    spnTeam = [...spnData.uplines];
   });
   if (spnTeam.length > 0) {
     NewspnTeam = spnTeam.map((items) => {
