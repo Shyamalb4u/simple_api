@@ -15,7 +15,7 @@ exports.signup = (req, res, next) => {
   User.findOne({ keyid: sponsor }).then((spnData) => {
     spnTeam = [...spnData.uplines];
   });
-  if (spnTeam.length > 0) {
+  if (spnTeam) {
     NewspnTeam = spnTeam.map((items) => {
       return (items.lvl += 1);
     });
