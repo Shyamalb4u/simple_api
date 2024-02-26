@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
         mail: mail,
         password: hashPass,
         sponsor: sponsor,
-        date: Date.now,
+        date: Date.now(),
         uplines: [],
       });
       return user.save();
