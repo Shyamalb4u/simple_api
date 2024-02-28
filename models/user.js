@@ -27,5 +27,9 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
 });
 module.exports = mongoose.model("User", userSchema);

@@ -41,6 +41,7 @@ exports.signup = (req, res, next) => {
         sponsor: sponsor,
         date: Date.now(),
         uplines: [],
+        active: false,
       });
       return user.save();
     })
