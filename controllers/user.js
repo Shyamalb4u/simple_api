@@ -112,7 +112,7 @@ exports.getTeam = (req, res, next) => {
     });
 };
 exports.getPackages = (req, res, next) => {
-  Package.find
+  Package.find()
     .then((pack) => {
       if (!pack) {
         const error = new Error("No Package found.");
