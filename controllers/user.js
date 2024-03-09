@@ -128,6 +128,24 @@ exports.getPackages = (req, res, next) => {
       next(err);
     });
 };
+exports.getPackageByID = (req, res, next) => {
+  const id = req.body.id;
+  Package.find({ _id: id })
+    .then((pack) => {
+      if (!pack) {
+        const error = new Error("No Package found.");
+        error.statusCode = 401;
+        throw error;
+      }
+      res.status(200).json({ pack: pack });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 exports.login = (req, res, next) => {
   const email = req.body.mail;
   const password = req.body.pass;
