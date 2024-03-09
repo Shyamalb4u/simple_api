@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const Ledger = require("../models/ledger");
+const Package = require("../models/packages");
 
 exports.signup = (req, res, next) => {
   const errors = validationResult(req);
@@ -102,6 +103,23 @@ exports.getTeam = (req, res, next) => {
         throw error;
       }
       res.status(200).json({ users: user });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+exports.getPackages = (req, res, next) => {
+  Package.find
+    .then((pack) => {
+      if (!pack) {
+        const error = new Error("No Package found.");
+        error.statusCode = 401;
+        throw error;
+      }
+      res.status(200).json({ pack: pack });
     })
     .catch((err) => {
       if (!err.statusCode) {
