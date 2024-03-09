@@ -5,5 +5,5 @@ const router = express.Router();
 router.get("/add_money", isAuth, authController.addMoney);
 router.get("/direct", isAuth, authController.getDirect);
 router.get("/team", isAuth, authController.getTeam);
-router.get("/package", isAuth, authController.getPackages);
+router.get("/package", authController.getPackages);
 module.exports = router;
