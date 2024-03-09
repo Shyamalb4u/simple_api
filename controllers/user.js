@@ -92,6 +92,24 @@ exports.getDirect = (req, res, next) => {
       next(err);
     });
 };
+exports.getTeam = (req, res, next) => {
+  const keyid = req.userId;
+  User.find({ uplines: { $elemMatch: { keyid: keyid } } })
+    .then((user) => {
+      if (!user) {
+        const error = new Error("No Team found.");
+        error.statusCode = 401;
+        throw error;
+      }
+      res.status(200).json({ users: user });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
 exports.login = (req, res, next) => {
   const email = req.body.mail;
   const password = req.body.pass;

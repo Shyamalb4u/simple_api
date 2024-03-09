@@ -4,4 +4,5 @@ const isAuth = require("../middleware/is_auth");
 const router = express.Router();
 router.get("/add_money", isAuth, authController.addMoney);
 router.get("/direct", isAuth, authController.getDirect);
+router.get("/team", isAuth, authController.getTeam);
 module.exports = router;
