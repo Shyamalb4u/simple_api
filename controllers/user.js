@@ -129,7 +129,7 @@ exports.getPackages = (req, res, next) => {
     });
 };
 exports.getPackageByID = (req, res, next) => {
-  const id = req.body.id;
+  const id = req.params.id;
   Package.find({ _id: id })
     .then((pack) => {
       if (!pack) {

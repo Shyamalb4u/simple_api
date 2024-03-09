@@ -6,5 +6,5 @@ router.get("/add_money", isAuth, authController.addMoney);
 router.get("/direct", isAuth, authController.getDirect);
 router.get("/team", isAuth, authController.getTeam);
 router.get("/package", authController.getPackages);
-router.get("/single_package", authController.getPackageByID);
+router.get("/single_package/:id", authController.getPackageByID);
 module.exports = router;
